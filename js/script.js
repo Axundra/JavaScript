@@ -29,7 +29,7 @@ function iniciarSesion (usuario, contraseña){
         alert("Usuario y/o contraseña incorrectos")
     }
 }
-while(ingreso != "3"){
+while(ingreso != "3" && ingreso != null){       //el null es en caso de que el usuario presione ESC o el boton de 'cancelar', sin esto el while se sigue repitiendo en ambos casos
     if (sesion){
         ingreso = prompt("Ingrese el programa a ejecutar escribiendo el número correspondiente:   1| Cerrar sesión|   2| Calcular promedio|   3| Salir|");
         if (ingreso == "1"){
@@ -64,24 +64,28 @@ while(ingreso != "3"){
         let dato = "";
 
         while(dato != "x" && dato != "X"){
-            dato = prompt('Ingrese números para calcular su promedio, para hacer el calculo ingrese "x", -no ingrese texto-');
+            dato = prompt('Ingrese números para calcular el promedio entre todos ellos, para hacer el calculo ingrese "x"');
             if(dato != "x" && dato != "X"){         //se rompe el calculo al ingresar "X" porque entra en la suma de numeros
-                console.log("Ingresó " + numero);
+                console.log("Ingresó el número " + numero);
                 numero = parseInt(dato);
                 suma += numero;
                 conteo ++;
+                console.log("Promedio actual: " + (suma/conteo));
             }
 
             if (isNaN(numero)){     //lo saqué de internet porque me frustraba que un string rompa todo
                 alert("Ingresó un caracter inválido o un espacio vacío, vuelva a comenzar y por favor sólo utilice números")
                 conteo = 0;
                 suma = 0;
+                console.clear();
             }
         }
         alert("ingresó " + conteo + " números, su promedio es de: " + (suma/conteo));
+        console.clear();
     } 
     
-    else if (ingreso != "3"){
+    else if (ingreso != "3" && ingreso != null){
+        console.log(ingreso);
         alert ("Intente de nuevo ingresando únicamente los números correspondientes a cada menú");
     }
 
