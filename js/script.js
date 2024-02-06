@@ -21,7 +21,14 @@ if(0 == 1){ //codigo basura para tomar nota de las cosas
 
 let ingreso = "";
 let sesion = false;
-
+function iniciarSesion (usuario, contraseña){
+    if(usuario == "Jhon" || contraseña == "Salchichon"){
+        alert("Bienvenido " + usuario)
+        sesion = true;
+    }else{
+        alert("Usuario y/o contraseña incorrectos")
+    }
+}
 while(ingreso != "3"){
     if (sesion){
         ingreso = prompt("Ingrese el programa a ejecutar escribiendo el número correspondiente:   1| Cerrar sesión|   2| Calcular promedio|   3| Salir|");
@@ -33,30 +40,24 @@ while(ingreso != "3"){
         ingreso = prompt("Ingrese el programa a ejecutar escribiendo el número correspondiente:   1| Iniciar sesion|   2| Calcular promedio|   3| Salir|");
     }
 
-    if (ingreso == "1"){
-        let usuario =   prompt("Usuario:                                1| Volver al menú|   2| Salir|                (usuario:Jhon)")
-        if (usuario == "1"){                     
+    if (ingreso == "1"){            //intenté hacerlo con un switch(){ } pero por alguna razon se ejecutaban todos los case();
+        let user = prompt("Usuario:                                1| Volver al menú|   2| Salir|                (usuario:Jhon)")
+        if (user == "1"){        //haría una función con esto pero no me deja usar el continue; dentro de una funcion
             continue;
-        }if(usuario == "2"){
+        }if(user == "2"){
             break;
         }
 
-        let pass =      prompt("Contraseña:                             1| Volver al menú|   2| Salir|                (contraseña:Salchichon)")
-        if (pass == "1"){                     
+        let pass    = prompt("Contraseña:                          1| Volver al menú|   2| Salir|                (contraseña:Salchichon)")
+        if (pass == "1"){
             continue;
         }if(pass == "2"){
             break;
         }
-
-        if(usuario == "Jhon" || pass == "Salchichon"){
-            alert("Bienvenido " + usuario)
-            sesion = true;
-        }else{
-            alert("Usuario y/o contraseña incorrectos")
-        }
+        iniciarSesion(user, pass)
     }
-
-    if (ingreso == "2"){
+    
+    else if (ingreso == "2"){
         let conteo = 0;
         let suma = 0;
         let numero = 0;
@@ -65,10 +66,10 @@ while(ingreso != "3"){
         while(dato != "x" && dato != "X"){
             dato = prompt('Ingrese números para calcular su promedio, para hacer el calculo ingrese "x", -no ingrese texto-');
             if(dato != "x" && dato != "X"){         //se rompe el calculo al ingresar "X" porque entra en la suma de numeros
-                numero = parseInt(dato);
                 console.log("Ingresó " + numero);
-                conteo ++;
+                numero = parseInt(dato);
                 suma += numero;
+                conteo ++;
             }
 
             if (isNaN(numero)){     //lo saqué de internet porque me frustraba que un string rompa todo
@@ -78,6 +79,10 @@ while(ingreso != "3"){
             }
         }
         alert("ingresó " + conteo + " números, su promedio es de: " + (suma/conteo));
+    } 
+    
+    else if (ingreso != "3"){
+        alert ("Intente de nuevo ingresando únicamente los números correspondientes a cada menú");
     }
 
 }
