@@ -1,20 +1,83 @@
 if(0 == 1){ //codigo basura para tomar nota de las cosas
             //lo dejo dentro de un if para que no pierda los colores y lo entienda mejor
     let variable = 0;
-    let dato = parseInt(prompt("Ingresar numero")) // ingresar dato con prompt y convertirlo a integer
+    let cosas = parseInt(prompt("Ingresar numero")) // ingresar dato con prompt y convertirlo a integer
     console.log(variable);
     alert(variable);
-    if((variable == 0) && (dato + " hola" == "dato hola")){
-    }else if(dato != "patas" || variable < 6){
+    if((variable == 0) && (cosas + " hola" == "cosas hola")){
+    }else if(cosas != "patas" || variable < 6){
     }else{}
     for(let i=0; i<=5; i++){
         variable += i;
-        continue; //vuelve al inicio del ciclo sin ejecutar lo demás
+        continue; //vuelve al inicio del ciclo sin ejecutar lo demás, por lo visto funciona para el culo dentro de un if
     }
     do{
         //se ejecuta por lo menos una vez y se ejecuta una vez más hasta que el while sea falso, funciona como while
-    }while(dato != "salir")
+    }while(cosas != "salir")
     while(variable != "salir"){
         break; //cierra el ciclo
     }
+}
+
+let ingreso = "";
+let sesion = false;
+
+while(ingreso != "3"){
+    if (sesion){
+        ingreso = prompt("Ingrese el programa a ejecutar escribiendo el número correspondiente:   1| Cerrar sesión|   2| Calcular promedio|   3| Salir|");
+        if (ingreso == "1"){
+            sesion = false;
+            continue;
+        }
+    }else{
+        ingreso = prompt("Ingrese el programa a ejecutar escribiendo el número correspondiente:   1| Iniciar sesion|   2| Calcular promedio|   3| Salir|");
+    }
+
+    if (ingreso == "1"){
+        let usuario =   prompt("Usuario:                                1| Volver al menú|   2| Salir|                (usuario:Jhon)")
+        if (usuario == "1"){                     
+            continue;
+        }if(usuario == "2"){
+            break;
+        }
+
+        let pass =      prompt("Contraseña:                             1| Volver al menú|   2| Salir|                (contraseña:Salchichon)")
+        if (pass == "1"){                     
+            continue;
+        }if(pass == "2"){
+            break;
+        }
+
+        if(usuario == "Jhon" || pass == "Salchichon"){
+            alert("Bienvenido " + usuario)
+            sesion = true;
+        }else{
+            alert("Usuario y/o contraseña incorrectos")
+        }
+    }
+
+    if (ingreso == "2"){
+        let conteo = 0;
+        let suma = 0;
+        let numero = 0;
+        let dato = "";
+
+        while(dato != "x" && dato != "X"){
+            dato = prompt('Ingrese números para calcular su promedio, para hacer el calculo ingrese "x", -no ingrese texto-');
+            if(dato != "x" && dato != "X"){         //se rompe el calculo al ingresar "X" porque entra en la suma de numeros
+                numero = parseInt(dato);
+                console.log("Ingresó " + numero);
+                conteo ++;
+                suma += numero;
+            }
+
+            if (isNaN(numero)){     //lo saqué de internet porque me frustraba que un string rompa todo
+                alert("Ingresó un caracter inválido o un espacio vacío, vuelva a comenzar y por favor sólo utilice números")
+                conteo = 0;
+                suma = 0;
+            }
+        }
+        alert("ingresó " + conteo + " números, su promedio es de: " + (suma/conteo));
+    }
+
 }
