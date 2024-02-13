@@ -1,27 +1,9 @@
-if(0 == 1){ //codigo basura para tomar nota de las cosas
-            //lo dejo dentro de un if para que no pierda los colores y lo entienda mejor
-    let variable = 0;
-    let cosas = parseInt(prompt("Ingresar numero")) // ingresar dato con prompt y convertirlo a integer
-    console.log(variable);
-    alert(variable);
-    if((variable == 0) && (cosas + " hola" == "cosas hola")){
-    }else if(cosas != "patas" || variable < 6){
-    }else{}
-    for(let i=0; i<=5; i++){
-        variable += i;
-        continue; //vuelve al inicio del ciclo sin ejecutar lo demás, por lo visto funciona para el culo dentro de un if
-    }
-    do{
-        //se ejecuta por lo menos una vez y se ejecuta una vez más hasta que el while sea falso, funciona como while
-    }while(cosas != "salir")
-    while(variable != "salir"){
-        break; //cierra el ciclo
-    }
-}
-
 let ingreso = "";
 let sesion = false;
-function iniciarSesion (usuario, contraseña){
+alert("La mayotía del programa se muestra en pantalla pero hay algunas cosas que se muestran en consola.")
+while(ingreso != "3" && ingreso != null){       //el null es en caso de que el usuario presione ESC o el boton de 'cancelar', sin esto el while se sigue repitiendo en ambos casos
+    
+    function iniciarSesion (usuario, contraseña){       //no sabía qué funcion hacerle a mi código así que hice una redundante
     if(usuario == "Jhon" || contraseña == "Salchichon"){
         alert("Bienvenido " + usuario)
         sesion = true;
@@ -29,8 +11,7 @@ function iniciarSesion (usuario, contraseña){
         alert("Usuario y/o contraseña incorrectos")
     }
 }
-while(ingreso != "3" && ingreso != null){       //el null es en caso de que el usuario presione ESC o el boton de 'cancelar', sin esto el while se sigue repitiendo en ambos casos
-    if (sesion){
+if (sesion){
         ingreso = prompt("Ingrese el programa a ejecutar escribiendo el número correspondiente:   1| Cerrar sesión|   2| Calcular promedio|   3| Salir|");
         if (ingreso == "1"){
             sesion = false;
