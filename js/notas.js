@@ -58,3 +58,39 @@ const mapeo     = array.map((elemento) => {
 const total = array.reduce((acumulado, elemento) => {
     return elemento.cantidad + acumulado;
 }, 0); //valor inicial del acumulado
+
+Math.ceil(4.1);//parriba
+Math.round(4.5);//del .5 parriba
+Math.floor(4.9);//pabajo
+Math.min(1, 2, 3);
+Math.max(1, 2, 3);
+Math.random()*10;
+
+fecha = new Date();//hoy
+fecha2 = new Date(2024, 3, 15);//ese día
+console.log(fecha.getFullYear());
+console.log(fecha.getMonth()+1);//+1 por que arranca de 0
+console.log(fecha.getDate());
+console.log(fecha.toDateString());
+console.log(fecha.toLocaleString());
+console.log(fecha.toLocaleDateString());
+console.log(fecha.toTimeString());
+console.log(fecha.getHours());
+console.log(fecha.getMinutes());
+console.log(fecha.getSeconds());
+console.log(fecha.getTime());//creo que muestra la cantidad de milisegundos entre esa fecha y la actual
+
+document.getElementById(ID);                        //devuelve el primero que encuentra
+document.getElementsByClassName(clase);             //devuelve una lista de las clases        puede ser (clase[2])
+console.log(clase.innerHTML);                       //imprime en lista los elementos de esa clase     puede ser (class.innerHTML[2])
+clase.innerHTML[2] = "sexo";                        //se pueden pasar propiedades como <strong> innerText pasa puro texto
+claseDeHTML.className = "box";                      //modifica la clase de un elemento en HTML
+
+const parrafo = document.createElement("p");
+parrafo.innerText = "soy un parrafo";
+document.body.append(parrafo);
+
+const otroID = document.getElementById("ID");
+otroID.append(parrafo);
+
+console.log(`texto ${variable} más texto $${variable}`);
