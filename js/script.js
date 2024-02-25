@@ -11,9 +11,18 @@ const cuentas = [
     {cuenta: 'Gnomo', contrasena: 'wo!'},
 ];
 
+/////////////////////////////////////////////////////////////Funciones
+
 function crearCuenta (user_crear, pass_crear){//crea usuario nuevo
-    cuentas.push({cuenta: user_crear, contrasena: pass_crear})
-    console.log(cuentas);
+    const check = cuentas.find(element =>{//busca si el usuario ya existe
+        return element.cuenta == user_crear;
+    })
+    if (check == null){//checkea si se encontró algo
+        cuentas.push({cuenta: user_crear, contrasena: pass_crear})
+        iniciarSesion(user_crear, pass_crear)//ejecuta la funcion para iniciar sesión automaticamente
+    }else{
+        alert('El usuario ya existe, por favor intente con otro nombre:')//para evitar problemas con el código
+    }
 }
 
 function recuperarPass (){//Busca el nombre de usuario y devuelve la contraseña
@@ -39,22 +48,15 @@ function recuperarPass (){//Busca el nombre de usuario y devuelve la contraseña
 }
 
 function iniciarSesion (user_iniciar, pass_iniciar){//por algun molesto motivo el forEach no funcionaba como debía y solo pasaba una vez por el array por más elementos que tuviera
-    console.clear();
     const cuentaCorrecta = cuentas.filter(element => {      //busca el objeto correspondiente
-        console.log(element);
-        console.log(element.cuenta);
-        console.log(element.contrasena);
         return element.cuenta == user_iniciar && element.contrasena == pass_iniciar;
     })
-    console.log(cuentaCorrecta);
     if (cuentaCorrecta[0] != null){       //chequea si se encontró el objeto
         sesion = true;
-        alert("Bienvenido " + user_iniciar)
     }else{                  //si no se encontró nada:
         let opcion = prompt("Usuario y/o contraseña no coinciden con la base de datos\nDesea crear un usuario nuevo con los datos ingresados?\n\n1| Sí|   2| No, volver a intentar|   3| Olvidé la contraseña");
         if (opcion == "1"){
             crearCuenta(user_iniciar, pass_iniciar);
-            iniciarSesion(user_iniciar, pass_iniciar)//ejecuta la funcion para iniciar sesión automaticamente
         }else if (opcion == "2"){
             return false;
         }else if (opcion == "3"){
@@ -62,18 +64,18 @@ function iniciarSesion (user_iniciar, pass_iniciar){//por algun molesto motivo e
         }
     }
 }
-//_________________________funciones
+/////////////////////////////////////////////////////////////Funciones
 
 
 while(user != "2" && user != null){       //el null es en caso de que el usuario presione ESC o el boton de 'cancelar', sin esto el while se sigue repitiendo en ambos casos
     if (sesion){//chequea si se inició sesión
-        ingreso = prompt("Menú (1)");
+        ingreso = prompt(`Bienvenido ${user}`);
         if (ingreso == "1"){
             sesion = false;
             continue;
         }
 
-    }else{
+    }else{//si no se inició sesión:
         user = prompt("///Bienvenido a la red social más inutil de todas uwu///\n__________________________________________________________\nIngrese nombre de usuario para iniciar sesión o elija una de las opciones del menú: \n\n1| Crear usuario|   2| Salir\n(usuario: Jhon)")
         if (user == "1"){
             user = prompt("Ingrese el nombre del nuevo usuario:\n1|Volver|")
