@@ -1,44 +1,105 @@
 let ingreso = "";
 let sesion = false;
-alert("La mayotía del programa se muestra en pantalla pero hay algunas cosas que se muestran en consola.")
-while(ingreso != "3" && ingreso != null){       //el null es en caso de que el usuario presione ESC o el boton de 'cancelar', sin esto el while se sigue repitiendo en ambos casos
+let pass = "";
+let user = "";
+const cuentas = [
+    {cuenta: 'Jhon', contrasena: 'Salchichon'},
+    {cuenta: 'Gustavo', contrasena: 'fideos'},
+    {cuenta: 'Ariel', contrasena: 'uwu'},
+    {cuenta: 'Milei', contrasena: 'VIVA LA LIBERTAD CARAJO >:v'},
+    {cuenta: 'Gorda', contrasena: 'negra'},
+    {cuenta: 'Gnomo', contrasena: 'wo!'},
+];
 
-    function iniciarSesion (usuario, contraseña){       //no sabía qué funcion hacerle a mi código así que hice una redundante
-        if(usuario == "Jhon" || contraseña == "Salchichon"){
-            alert("Bienvenido " + usuario)
-            sesion = true;
+function crearCuenta (user_crear, pass_crear){//crea usuario nuevo
+    cuentas.push({cuenta: user_crear, contrasena: pass_crear})
+    console.log(cuentas);
+}
+
+function recuperarPass (){//Busca el nombre de usuario y devuelve la contraseña
+    while(ingreso != "1"){
+        cuentas.forEach(element => {
+            console.log(element.cuenta);
+        });
+        ingreso = prompt ("Ingrese el nombre de usuario:\n1|Volver|\n\nSe muestra la lista en consola")
+        const recuperar = cuentas.find(element => {
+            return element.cuenta == ingreso;
+        })
+        console.clear();//limpia consola
+
+        if(ingreso == "1"){//sale de la funcion
+            break;
+        }else if (recuperar != undefined){
+            alert(`La contraseña del usuario ${recuperar.cuenta} es:\n\n${recuperar.contrasena}`)
+            break;
         }else{
-            alert("Usuario y/o contraseña incorrectos")
+            alert('No se ha encontrado el usuario')
         }
     }
-if (sesion){
-        ingreso = prompt("Ingrese el programa a ejecutar escribiendo el número correspondiente:\n\n1| Cerrar sesión|   2| Calcular promedio|   3| Salir|");
+}
+
+function iniciarSesion (user_iniciar, pass_iniciar){//por algun molesto motivo el forEach no funcionaba como debía y solo pasaba una vez por el array por más elementos que tuviera
+    console.clear();
+    const cuentaCorrecta = cuentas.filter(element => {      //busca el objeto correspondiente
+        console.log(element);
+        console.log(element.cuenta);
+        console.log(element.contrasena);
+        return element.cuenta == user_iniciar && element.contrasena == pass_iniciar;
+    })
+    console.log(cuentaCorrecta);
+    if (cuentaCorrecta[0] != null){       //chequea si se encontró el objeto
+        sesion = true;
+        alert("Bienvenido " + user_iniciar)
+    }else{                  //si no se encontró nada:
+        let opcion = prompt("Usuario y/o contraseña no coinciden con la base de datos\nDesea crear un usuario nuevo con los datos ingresados?\n\n1| Sí|   2| No, volver a intentar|   3| Olvidé la contraseña");
+        if (opcion == "1"){
+            crearCuenta(user_iniciar, pass_iniciar);
+            iniciarSesion(user_iniciar, pass_iniciar)//ejecuta la funcion para iniciar sesión automaticamente
+        }else if (opcion == "2"){
+            return false;
+        }else if (opcion == "3"){
+            recuperarPass();
+        }
+    }
+}
+//_________________________funciones
+
+
+while(user != "2" && user != null){       //el null es en caso de que el usuario presione ESC o el boton de 'cancelar', sin esto el while se sigue repitiendo en ambos casos
+    if (sesion){//chequea si se inició sesión
+        ingreso = prompt("Menú (1)");
         if (ingreso == "1"){
             sesion = false;
             continue;
         }
+
     }else{
-        ingreso = prompt("Ingrese el programa a ejecutar escribiendo el número correspondiente:\n\n1| Iniciar sesion|   2| Calcular promedio|   3| Salir|");
-    }
-
-    switch(ingreso){
-        case "1":
-            let user = prompt("Usuario:\n\n1| Volver al menú|   2| Salir|\n(usuario:Jhon)")
-            if (user == "1"){        //haría una función con esto pero no me deja usar el continue; dentro de una funcion
+        user = prompt("///Bienvenido a la red social más inutil de todas uwu///\n__________________________________________________________\nIngrese nombre de usuario para iniciar sesión o elija una de las opciones del menú: \n\n1| Crear usuario|   2| Salir\n(usuario: Jhon)")
+        if (user == "1"){
+            user = prompt("Ingrese el nombre del nuevo usuario:\n1|Volver|")
+            if (user == "1"){//reinicia el bucle si ingresa 1
                 continue;
-            }if(user == "2"){
-                break;
-            }
+            }//no usé else if porque o se reinicia el bucle o continua
 
-            let pass    = prompt("Contraseña:\n\n1| Volver al menú|   2| Salir|\n(contraseña:Salchichon)")
-            if (pass == "1"){
+            pass = prompt(`Ingrese la contraseña para el usuario ${user}\n1|Volver|`)
+            if (pass == "1"){//reinicia el bucle si ingresa 1
                 continue;
-            }if(pass == "2"){
-                break;
             }
-            iniciarSesion(user, pass);
+            crearCuenta(user, pass);
+
+        }else if (user == "2" || user == null){
             break;
+        }else{
+            pass = prompt("Ahora ingrese su contraseña\n(contraseña: Salchichon)")
+            iniciarSesion(user, pass);
+        }
+    }
+}
 
+
+
+
+/* 
         case "2":
         let conteo = 0;
         let suma = 0;
@@ -72,8 +133,6 @@ if (sesion){
     }
     
     if (ingreso != "1" && ingreso != "2" && ingreso != "3" && ingreso != null){//esto quedaba más simple si usaba if en lugar del switch porque acá ponía un else if
-        console.log(ingreso);
         alert ("Intente de nuevo ingresando únicamente los números correspondientes a cada menú");
     }
-
-}
+ */
