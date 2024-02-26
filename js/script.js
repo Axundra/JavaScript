@@ -69,7 +69,8 @@ function iniciarSesion (user_iniciar, pass_iniciar){//por algun molesto motivo e
 
 while(user != "2" && user != null){       //el null es en caso de que el usuario presione ESC o el boton de 'cancelar', sin esto el while se sigue repitiendo en ambos casos
     if (sesion){//chequea si se inició sesión
-        ingreso = prompt(`Bienvenido ${user}`);
+        console.log(cuentas);
+        ingreso = prompt(`Bienvenido ${user}\n\nPor ahora no hace anda más\n\n1|Cerrar sesión`);
         if (ingreso == "1"){
             sesion = false;
             continue;
