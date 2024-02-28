@@ -36,9 +36,9 @@ function recuperarPass (){//Busca el nombre de usuario y devuelve la contraseña
         })
         console.clear();//limpia consola
 
-        if(ingreso == "1"){//sale de la funcion
+        if(ingreso == "1" || ingreso == null){//sale de la funcion
             break;
-        }else if (recuperar != undefined){
+        }else if (recuperar.cuenta != undefined){
             alert(`La contraseña del usuario ${recuperar.cuenta} es:\n\n${recuperar.contrasena}`)
             break;
         }else{
@@ -48,19 +48,21 @@ function recuperarPass (){//Busca el nombre de usuario y devuelve la contraseña
 }
 
 function iniciarSesion (user_iniciar, pass_iniciar){//por algun molesto motivo el forEach no funcionaba como debía y solo pasaba una vez por el array por más elementos que tuviera
-    const cuentaCorrecta = cuentas.filter(element => {      //busca el objeto correspondiente
+    const cuentaCorrecta = cuentas.some(element => {      //busca el objeto correspondiente
         return element.cuenta == user_iniciar && element.contrasena == pass_iniciar;
     })
-    if (cuentaCorrecta[0] != null){       //chequea si se encontró el objeto
+    if (cuentaCorrecta){       //chequea si se encontró el objeto
         sesion = true;
     }else{                  //si no se encontró nada:
-        let opcion = prompt("Usuario y/o contraseña no coinciden con la base de datos\nDesea crear un usuario nuevo con los datos ingresados?\n\n1| Sí|   2| No, volver a intentar|   3| Olvidé la contraseña");
+        let opcion = prompt("Usuario y/o contraseña no coinciden con la base de datos\nDesea crear un usuario nuevo con los datos ingresados?\n\n1| Sí\n2| No, volver a intentar\n3| Olvidé la contraseña");
         if (opcion == "1"){
             crearCuenta(user_iniciar, pass_iniciar);
-        }else if (opcion == "2"){
-            return false;
+        }else if (opcion == "2" || ingreso == null){
+            return;
         }else if (opcion == "3"){
             recuperarPass();
+        }else{
+            iniciarSesion(user_iniciar, pass_iniciar);
         }
     }
 }
@@ -69,73 +71,32 @@ function iniciarSesion (user_iniciar, pass_iniciar){//por algun molesto motivo e
 
 while(user != "2" && user != null){       //el null es en caso de que el usuario presione ESC o el boton de 'cancelar', sin esto el while se sigue repitiendo en ambos casos
     if (sesion){//chequea si se inició sesión
-        console.log(cuentas);
-        ingreso = prompt(`Bienvenido ${user}\n\nPor ahora no hace anda más\n\n1|Cerrar sesión`);
-        if (ingreso == "1"){
+        ingreso = prompt(`///Bienvenido ${user}///\n\nPor ahora no hace anda más, pero tiene más funciones más allá de iniciar sesion.\n\nLas cuentas nuevas se almacenan en un array por lo que se puede volver e ingresar de nuevo con la cuenta creada\n\n1|Cerrar sesión(volver)`);
+        if (ingreso == "1" || ingreso == null){
             sesion = false;
             continue;
         }
 
     }else{//si no se inició sesión:
-        user = prompt("///Bienvenido a la red social más inutil de todas uwu///\n__________________________________________________________\nIngrese nombre de usuario para iniciar sesión o elija una de las opciones del menú: \n\n1| Crear usuario|   2| Salir\n(usuario: Jhon)")
+        user = prompt("///Bienvenido a la red social más inutil de todas uwu///\n__________________________________________________________\nElija una de las opciones del menú: \n\n1| Iniciar sesión\n2| Crear usuario\n3| Salir")
         if (user == "1"){
-            user = prompt("Ingrese el nombre del nuevo usuario:\n1|Volver|")
-            if (user == "1"){//reinicia el bucle si ingresa 1
-                continue;
-            }//no usé else if porque o se reinicia el bucle o continua
+            user = prompt(`Ingrese el nombre de usuario:\n1| Volver\n\n(usuario: Jhon)`)
+            if (user == "1" || ingreso == null){continue;}
 
-            pass = prompt(`Ingrese la contraseña para el usuario ${user}\n1|Volver|`)
-            if (pass == "1"){//reinicia el bucle si ingresa 1
-                continue;
-            }
+            pass = prompt("Ahora ingrese su contraseña:\n\n1| Volver(contraseña: Salchichon)")
+            if (pass == "1" || ingreso == null){continue;}
+
+            iniciarSesion(user, pass);
+        }else if (user == "2"){
+            user = prompt("Ingrese el nombre del nuevo usuario:\n1|Volver|")
+            if (user == "1" || ingreso == null){continue;}
+            pass = prompt(`Ingrese la contraseña para el usuario ${user}:\n1|Volver|`)
+            if (pass == "1" || ingreso == null){continue;}
             crearCuenta(user, pass);
 
-        }else if (user == "2" || user == null){
+        }else if (user == "3" || user == null){
             break;
         }else{
-            pass = prompt("Ahora ingrese su contraseña\n(contraseña: Salchichon)")
-            iniciarSesion(user, pass);
         }
     }
 }
-
-
-
-
-/* 
-        case "2":
-        let conteo = 0;
-        let suma = 0;
-        let numero = 0;
-        let dato = "";
-
-        while(dato != "x" && dato != "X"){
-            dato = prompt('Ingrese números para calcular el promedio entre todos ellos.\nPara hacer el calculo ingrese "x"');
-            if(dato != "x" && dato != "X"){         //se rompe el calculo al ingresar "X" porque entra en la suma de numeros
-                numero = parseInt(dato);
-                suma += numero;
-                conteo ++;
-                console.log("Ingresó el número " + numero);
-                console.log("Promedio actual: " + (suma/conteo));
-            }
-            if(numero == null){
-                break;
-            }if (isNaN(numero)){     //al isNaN lo saqué de internet porque me frustraba que un string rompa todo
-                alert("Ingresó un caracter inválido o un espacio vacío.\nVuelva a comenzar y por favor sólo utilice números")
-                conteo = 0;
-                suma = 0;
-                console.clear();
-            }
-        }
-        if(conteo == 1){
-            alert("Sólo ha ingresado un número ("+numero+").\nIngrese más de uno para calcular sus promedios")
-        }else{
-            alert("ingresó " + conteo + " números.\n\nSu promedio es de: " + (suma/conteo));
-            console.clear();
-        }break;
-    }
-    
-    if (ingreso != "1" && ingreso != "2" && ingreso != "3" && ingreso != null){//esto quedaba más simple si usaba if en lugar del switch porque acá ponía un else if
-        alert ("Intente de nuevo ingresando únicamente los números correspondientes a cada menú");
-    }
- */
