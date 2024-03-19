@@ -1,14 +1,17 @@
-let ingreso = "",
+let
+    ingreso = "",
     sesion = false,
     pass = "",
     user = "";
-const cuentas = [
-    { cuenta: 'Jhon', contrasena: 'Salchichon' },
-    { cuenta: 'Gustavo', contrasena: 'fideos' },
-    { cuenta: 'Ariel', contrasena: 'uwu' },
-    { cuenta: 'Gnomo', contrasena: 'wo!' },
-];
-let loginForm = document.getElementById("form"), //usé let porque tengo que volver a asignarles valores al cambiar la estructura HTML
+const
+    cuentas = [
+        { cuenta: 'Jhon', contrasena: 'Salchichon' },
+        { cuenta: 'Gustavo', contrasena: 'fideos' },
+        { cuenta: 'Ariel', contrasena: 'uwu' },
+        { cuenta: 'Gnomo', contrasena: 'wo!' },
+    ];
+let
+    loginForm = document.getElementById("form"), //usé let porque tengo que volver a asignarles valores al cambiar la estructura HTML
     loginButt = document.getElementById("log"),
     regButt = document.getElementById("reg"),
     loginError = document.getElementById("error_txt");
@@ -19,7 +22,8 @@ let loginForm = document.getElementById("form"), //usé let porque tengo que vol
 //imagino que esto no se hace así//
 ///////////////////////////////////
 
-const htmlReg = `   <input type="text" name="user" id="user" class="box" placeholder="Usuario"> 
+const
+    htmlReg = `   <input type="text" name="user" id="user" class="box" placeholder="Usuario"> 
                     <input type="password" name="pass" id="pass_id" class="box" placeholder="Contraseña">
                     <input type="password" name="pass2" id="pass2_id" class="box" placeholder="Confirmar contraseña">
                     <input type="button" value="Registrarme" id="reg">
@@ -32,12 +36,12 @@ const htmlReg = `   <input type="text" name="user" id="user" class="box" placeho
                     <input type="button" value="Registrarse" id="reg">`,
     //index^
 
-    htmlError = `<p id="error_txt" style="opacity: 0;">Usuario y/o<span id="error">contraseña invalidos</span></p>`,
+    htmlErrorLog = `<p id="error_txt" style="opacity: 0;">Usuario y/o<span id="error">contraseña invalidos</span></p>`,
     //error usuario y/o contraseña incorrectos^
 
-    htmlErrorReg = `<p id="error_txt">Usuario ya existente<span id="error">por favor, ingrese otro nombre de usuario</span></p>`,
+    htmlErrorRegClon = `<p id="error_txt">Usuario ya existente<span id="error">por favor, ingrese otro nombre de usuario</span></p>`,
     //error usuario ya existente^
-    
+
     htmlErrorRegPass = `<p id="error_txt">Las contraseñas<span id="error">no coinciden</span></p>`,
     //error contraseñas diferentes^
 
@@ -47,13 +51,22 @@ const htmlReg = `   <input type="text" name="user" id="user" class="box" placeho
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ HTML
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ Funciones
 
-function errorBox() {
+function mostrarError() {       //muestra la caja de error unos segundos
     loginError.style.opacity = 1;
-    setTimeout(()=>{
-    loginError.style.opacity = 0;
+    setTimeout(() => {
+        loginError.style.opacity = 0;
     }, 3000)
 }
 
+function checkVacio(user_check, pass_check, pass2_check) {      //checkea hay datos en blanco
+    if (user_check === "" || pass_check === "" || pass2_check === "") {
+        document.getElementById('error_box').innerHTML = htmlErrorRegNan;
+        mostrarError();
+        return false;
+    } else {
+        return true;
+    }
+}
 
 
 
@@ -89,7 +102,7 @@ function iniciarSesion(user_iniciar, pass_iniciar) {//por algun molesto motivo e
         sesion = true;
         //////////////////////////////////////////////////////////////////////////////////
     } else {                  //si no se encontró nada:
-        errorBox();
+        mostrarError();
     }
 }
 
@@ -117,33 +130,30 @@ regButt.addEventListener("click", () => {//crea usuario nuevo               no l
 
     regButt.addEventListener("click", () => {//click a "Registrarse"
 
-        const formPass = document.getElementById("form").pass.value,
-            formPass2 = document.getElementById("form").pass2.value,        //guarda los datos
-            formUser = document.getElementById("form").user.value;
+        const
+            formUser = document.getElementById("form").user.value,
+            formPass = document.getElementById("form").pass.value,
+            formPass2 = document.getElementById("form").pass2.value;        //guarda los datos
 
         const check = cuentas.find(element => {     //busca si el usuario ya existe
             return element.cuenta == formUser;
         })
-
-        if (formPass === "" || formPass2 === "" || formUser === "") {     //checkea hay datos en blanco
-            document.getElementById('error_box').innerHTML = htmlErrorRegNan;
-            errorBox();
-        } else {
-            if (check == null) {    //si se encuentra repetido el usuario en la 'base de datos' check no es null
+        if (checkVacio(formUser, formPass, formPass2)) {//Chekea si hay datos vacíos
+            if (check == null) {    //si se encuentra repetido el usuario en la 'base de datos' check no es null        no lo pongo dentro del anterior if para que el else tenga más coherencia
                 if (formPass == formPass2) {    //chekea si las contraseñas son iguales
                     cuentas.push({ cuenta: formUser, contrasena: formPass })
                     console.log(cuentas);
                     iniciarSesion(formUser, formPass)   //ejecuta la funcion para iniciar sesión automaticamente
-                } else {      //si las contraseñas no son iguales
+                } else {        //si las contraseñas no son iguales
                     document.getElementById('error_box').innerHTML = htmlErrorRegPass;
-                    errorBox();
+                    mostrarError();
                 }
-            } else {
-                document.getElementById('error_box').innerHTML = htmlErrorReg;
-                errorBox();
+            } else {            //si el nombre de usuario ya existe
+                document.getElementById('error_box').innerHTML = htmlErrorRegClon;
+                mostrarError();
             }
         }
-    })
+})
 
     loginButt.addEventListener("click", () => {
 
