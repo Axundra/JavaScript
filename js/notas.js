@@ -43,16 +43,16 @@ array.forEach((elemento) => {                   //igual que el anterior xd
 const encuentra = array.find((elemento) => {    //encuenta y retorna el primer elemento que cumpla la condicion
     return elemento.valor < 100;
 });
-const filtra    = array.filter((elemento) => {  //filtra y retorna los elementos que cumplan la condicion
+const filtra = array.filter((elemento) => {  //filtra y retorna los elementos que cumplan la condicion
     return elemento.valor > 1000 && elemento.valor < 2000;
 });
-const hay       = array.some((elemento) => {    //devuelve booleano si se encuentra el elemento
+const hay = array.some((elemento) => {    //devuelve booleano si se encuentra el elemento
     return elemento == "sexo";
 });
-const mapeo     = array.map((elemento) => {
+const mapeo = array.map((elemento) => {
     return {
         id: elemento.id,
-        cantidad: elemento.cantidad *10,
+        cantidad: elemento.cantidad * 10,
     };
 });
 const total = array.reduce((acumulado, elemento) => {
@@ -64,12 +64,12 @@ Math.round(4.5);//del .5 parriba            <-redondeos
 Math.floor(4.9);//pabajo
 Math.min(1, 2, 3);
 Math.max(1, 2, 3);
-Math.random()*10;
+Math.random() * 10;
 
 fecha = new Date();//hoy
 fecha2 = new Date(2024, 3, 15);//ese día
 console.log(fecha.getFullYear());
-console.log(fecha.getMonth()+1);//+1 por que arranca de 0
+console.log(fecha.getMonth() + 1);//+1 por que arranca de 0
 console.log(fecha.getDate());
 console.log(fecha.toDateString());
 console.log(fecha.toLocaleString());
@@ -80,10 +80,13 @@ console.log(fecha.getMinutes());
 console.log(fecha.getSeconds());
 console.log(fecha.getTime());//creo que muestra la cantidad de milisegundos entre esa fecha y la actual
 
-document.getElementById(ID);                        //devuelve el primero que encuentra
+document.getElementById(id);                        //devuelve el primero que encuentra
 document.getElementsByClassName(clase);             //devuelve una lista de las clases        puede ser (clase[2])
-document.querySelector(section.clase);              //devuelve el contenido de un <section> con la clase "clase", para ID se usa # en lugar de .
-document.querySelectorAll("div#id")
+document.querySelector("section.clase");            //devuelve el contenido de un <section> con la clase "clase", para ID se usa # en lugar de .
+document.querySelector(".class");
+document.querySelector("#id");
+document.querySelector("section");
+document.querySelectorAll("div#id")                 //devuelve un array
 console.log(clase.innerHTML);                       //imprime en lista los elementos de esa clase     puede ser (class.innerHTML[2])
 clase.innerHTML[2] = "sexo";                        //se pueden pasar propiedades como <strong> innerText pasa puro texto
 claseDeHTML.className = "box";                      //modifica la clase de un elemento en HTML
@@ -97,8 +100,8 @@ otroID.append(parrafo);
 
 console.log(`texto ${variable} más texto $${variable}`);        //concateneacion de variables, tambien se puede en rutas como ../img/${array[2]}
 
-parrafo.addEventListener("click",() => {})
-parrafo.onclick = () => {}
+parrafo.addEventListener("click", () => { })
+parrafo.onclick = () => { }
 
 
 

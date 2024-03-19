@@ -1,12 +1,32 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="icon" href="img/amongtagram.ico" type="image/ico">
+    <link rel="icon" href="img/amongtagram.ico" type="image/ico">
     <title>JavaScript</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body style="background-color: black;">
+
+<body>
+    <main id="main" class="a">
+        <h1 id="header">¡Bienvenido a la red social más inutil de todas uwu!</h1>
+        <div id="error_box">
+            <p id="error_txt">Usuario y/o<span id="error">contraseña invalidos</span></p>
+        </div>
+        <form id="form">
+            <input type="text" name="user" id="user" class="box" placeholder="Usuario">
+            <input type="password" name="pass" id="pass_id" class="box" placeholder="Contraseña">
+            <input type="button" value="Iniciar sesión" id="log">
+            <input type="button" value="Registrarse" id="reg">
+        </form>
+        <div style="font-size: .8em;">
+            <a href="#" id="recuperar">recuperar cuenta</a>
+        </div>
+        <p>lo saqué de internet xd</p>
+    </main>
     <script src="js/script.js"></script>
 </body>
+
 </html>
