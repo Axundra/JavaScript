@@ -2,7 +2,8 @@ let
     ingreso = "",
     pass = "",
     user = "";
-localStorage.setItem("sesion", false);
+localStorage.setItem("sesion", true);
+JSON.parse(localStorage.getItem("sesion"))
 
 const
     cuentas = [
@@ -11,13 +12,14 @@ const
         { cuenta: 'Ariel', contrasena: 'uwu' },
         { cuenta: 'Gnomo', contrasena: 'wo!' },
     ];
-localStorage.setItem ('cuentas', JSON.stringify(cuentas))
-console.log(JSON.parse(localStorage.getItem ('cuentas')));
+localStorage.setItem('cuentas', JSON.stringify(cuentas))
+console.log(JSON.parse(localStorage.getItem('cuentas')));
 let
     loginForm = document.getElementById("form"), //usé let porque tengo que volver a asignarles valores al cambiar la estructura HTML
     loginButt = document.getElementById("log"),
     regButt = document.getElementById("reg"),
-    loginError = document.getElementById("error_txt");
+    loginError = document.getElementById("error_txt"),
+    mainHTML = document.getElementById("main")
 
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ Variables
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ HTML
@@ -26,7 +28,7 @@ let
 ///////////////////////////////////
 
 const
-    htmlReg = `   <input type="text" name="user" id="user" class="box" placeholder="Usuario"> 
+    htmlReg = `     <input type="text" name="user" id="user" class="box" placeholder="Usuario"> 
                     <input type="password" name="pass" id="pass_id" class="box" placeholder="Contraseña">
                     <input type="password" name="pass2" id="pass2_id" class="box" placeholder="Confirmar contraseña">
                     <input type="button" value="Registrarme" id="reg">
@@ -38,18 +40,31 @@ const
                     <input type="button" value="Iniciar sesión" id="log">
                     <input type="button" value="Registrarse" id="reg">`,
     //index^
+    htmlInicio = `  <h1 id="header">Bienvenido Jhon!</h1>
+                    <div>
+                        <a href="https://www.instagram.com/axundra"><img src="img/amongtagram.ico" alt="Foto de perfil"></a>
+                        <h2>Jhoncito</h2>
+                    </div>
+                    <div id="form">
+                        <input type="button" id="log" value="Amigos">
+                        <input type="button" id="log" value="Fotos">
+                        <input type="button" id="log" value="Eventos">
+                        <input type="button" name="cerrar" id="unlog" value="Cerrar sesion">
+                    </div>
+                    <p>sólo el botón de cerrar sesión sirve</p>`,
 
     htmlErrorLog = `<p id="error_txt" style="opacity: 0;">Usuario y/o<span id="error">contraseña invalidos</span></p>`,
     //error usuario y/o contraseña incorrectos^
 
-    htmlErrorRegClon = `<p id="error_txt">Usuario ya existente<span id="error">por favor, ingrese otro nombre de usuario</span></p>`,
+    htmlErrorRegClon = `<p id="error_txt">Usuario ya existente<span id="error">ingrese otro nombre de usuario</span></p>`,
     //error usuario ya existente^
 
     htmlErrorRegPass = `<p id="error_txt">Las contraseñas<span id="error">no coinciden</span></p>`,
     //error contraseñas diferentes^
 
     htmlErrorRegNan = `<p id="error_txt">Complete todos los<span id="error">campos por favor</span></p>`;
-//error datos vacíos^
+    //error datos vacíos^
+
 
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ HTML
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ Funciones
@@ -100,18 +115,54 @@ function iniciarSesion(user_iniciar, pass_iniciar) {//por algun molesto motivo e
     const cuentaCorrecta = cuentas.some(element => {      //busca el objeto correspondiente
         return element.cuenta === user_iniciar && element.contrasena === pass_iniciar;
     })
-    if (cuentaCorrecta) {       //chequea si se encontró la cuenta
-        //////////////////////////////////////////////////////////////////////////////////
+    if (cuentaCorrecta) {//chequea si se encontró la cuenta
         localStorage.setItem("sesion", true);
-        //////////////////////////////////////////////////////////////////////////////////
-    } else {                  //si no se encontró nada:
+        sesionIniciada()
+    } else {//si no se encontró nada:
         mostrarError();
+    }
+}
+
+function sesionIniciada() {//checkea si ya se inició sesión y procede a la página principal si es así
+    if(JSON.parse(localStorage.getItem('sesion'))){
+        mainHTML.innerHTML = htmlInicio;
+    }
+    
+}
+
+function registrar() {
+    const
+        formUser = document.getElementById("form").user.value,
+        formPass = document.getElementById("form").pass.value,
+        formPass2 = document.getElementById("form").pass2.value;        //guarda los datos
+
+    const check = cuentas.find(element => {     //busca si el usuario ya existe
+        return element.cuenta == formUser;
+    })
+    if (checkVacio(formUser, formPass, formPass2)) {//Chekea si hay datos vacíos
+        if (check == null) {    //si se encuentra repetido el usuario en la 'base de datos' check no es null        no lo pongo dentro del anterior if para que el else tenga más coherencia
+            if (formPass == formPass2) {    //chekea si las contraseñas son iguales
+
+                cuentas = JSON.parse(localStorage.getItem('cuentas'));          //recupera la lista de cuentas
+                cuentas.push({ cuenta: formUser, contrasena: formPass });       //pushea la nueva cuenta
+                localStorage.setItem('cuentas', JSON.stringify(cuentas));       //almacena la lista de cuentas actualizada
+                localStorage.setItem('cuenta actual', JSON.stringify(formUser)) //almachena el nombre de la cuenta que está iniciada para mostrarlo en el HTML como saludo
+                
+                console.log(cuentas);/////////////////////////////////////////////////////////////////////////////
+                iniciarSesion(formUser, formPass)   //ejecuta la funcion para iniciar sesión automaticamente
+            } else {        //si las contraseñas no son iguales
+                document.getElementById('error_box').innerHTML = htmlErrorRegPass;
+                mostrarError();
+            }
+        } else {            //si el nombre de usuario ya existe
+            document.getElementById('error_box').innerHTML = htmlErrorRegClon;
+            mostrarError();
+        }
     }
 }
 
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ Funciones
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ Event Listeners
-
 
 //login
 loginButt.addEventListener("click", () => {
@@ -121,7 +172,7 @@ loginButt.addEventListener("click", () => {
 })
 
 //registro
-regButt.addEventListener("click", () => {//crea usuario nuevo               no lo hice funcion porque no me pareció necesario
+regButt.addEventListener("click", () => {//crea usuario nuevo
     loginError.style.opacity = 0;//oculta el error en caso de estar
 
     loginForm.innerHTML = htmlReg; //añade una caja de texto para confirmar contraseña
@@ -132,38 +183,12 @@ regButt.addEventListener("click", () => {//crea usuario nuevo               no l
 
 
     regButt.addEventListener("click", () => {//click al botón "Registrarse"
-
-        const
-            formUser = document.getElementById("form").user.value,
-            formPass = document.getElementById("form").pass.value,
-            formPass2 = document.getElementById("form").pass2.value;        //guarda los datos
-
-        const check = cuentas.find(element => {     //busca si el usuario ya existe
-            return element.cuenta == formUser;
-        })
-        if (checkVacio(formUser, formPass, formPass2)) {//Chekea si hay datos vacíos
-            if (check == null) {    //si se encuentra repetido el usuario en la 'base de datos' check no es null        no lo pongo dentro del anterior if para que el else tenga más coherencia
-                if (formPass == formPass2) {    //chekea si las contraseñas son iguales
-
-                    cuentas = JSON.parse(localStorage.getItem ('cuentas'));     //recupera la lista de cuentas
-                    cuentas.push({ cuenta: formUser, contrasena: formPass });   //pushea la nueva cuenta
-                    localStorage.setItem ('cuentas', JSON.stringify(cuentas));  //almacena la lista de cuentas actualizada
-
-                    console.log(cuentas);/////////////////////////////////////////////////////////////////////////////
-                    iniciarSesion(formUser, formPass)   //ejecuta la funcion para iniciar sesión automaticamente
-                } else {        //si las contraseñas no son iguales
-                    document.getElementById('error_box').innerHTML = htmlErrorRegPass;
-                    mostrarError();
-                }
-            } else {            //si el nombre de usuario ya existe
-                document.getElementById('error_box').innerHTML = htmlErrorRegClon;
-                mostrarError();
-            }
-        }
+        registrar();
     })
 
-    loginButt.addEventListener("click", () => {
-
+    loginButt.addEventListener("click", () => { //Click al botón de volver
+        location.reload();//quería hacer que al tocar este boton la estructura HTML cambiara para ser igual a la anterior
+        //                          pero en ese caso, por alguna razon la página no funcionaba debidamente
     })
 
 })
