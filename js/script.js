@@ -1,8 +1,9 @@
 let
     ingreso = "",
-    sesion = false,
     pass = "",
     user = "";
+localStorage.setItem("sesion", false);
+
 const
     cuentas = [
         { cuenta: 'Jhon', contrasena: 'Salchichon' },
@@ -10,6 +11,8 @@ const
         { cuenta: 'Ariel', contrasena: 'uwu' },
         { cuenta: 'Gnomo', contrasena: 'wo!' },
     ];
+localStorage.setItem ('cuentas', JSON.stringify(cuentas))
+console.log(JSON.parse(localStorage.getItem ('cuentas')));
 let
     loginForm = document.getElementById("form"), //usé let porque tengo que volver a asignarles valores al cambiar la estructura HTML
     loginButt = document.getElementById("log"),
@@ -58,7 +61,7 @@ function mostrarError() {       //muestra la caja de error unos segundos
     }, 3000)
 }
 
-function checkVacio(user_check, pass_check, pass2_check) {      //checkea hay datos en blanco
+function checkVacio(user_check, pass_check, pass2_check) {      //checkea hay datos en blanco           //no encontré un método funcional para borrar los espacios del input
     if (user_check === "" || pass_check === "" || pass2_check === "") {
         document.getElementById('error_box').innerHTML = htmlErrorRegNan;
         mostrarError();
@@ -70,7 +73,7 @@ function checkVacio(user_check, pass_check, pass2_check) {      //checkea hay da
 
 
 
-
+/* 
 function recuperarPass() {//Busca el nombre de usuario y devuelve la contraseña
     while (ingreso != "1") {
         cuentas.forEach(element => {
@@ -91,7 +94,7 @@ function recuperarPass() {//Busca el nombre de usuario y devuelve la contraseña
             alert('No se ha encontrado el usuario')
         }
     }
-}
+} */
 
 function iniciarSesion(user_iniciar, pass_iniciar) {//por algun molesto motivo el forEach no funcionaba como debía y solo pasaba una vez por el array por más elementos que tuviera
     const cuentaCorrecta = cuentas.some(element => {      //busca el objeto correspondiente
@@ -99,7 +102,7 @@ function iniciarSesion(user_iniciar, pass_iniciar) {//por algun molesto motivo e
     })
     if (cuentaCorrecta) {       //chequea si se encontró la cuenta
         //////////////////////////////////////////////////////////////////////////////////
-        sesion = true;
+        localStorage.setItem("sesion", true);
         //////////////////////////////////////////////////////////////////////////////////
     } else {                  //si no se encontró nada:
         mostrarError();
@@ -128,7 +131,7 @@ regButt.addEventListener("click", () => {//crea usuario nuevo               no l
     loginError = document.getElementById("error_txt");
 
 
-    regButt.addEventListener("click", () => {//click a "Registrarse"
+    regButt.addEventListener("click", () => {//click al botón "Registrarse"
 
         const
             formUser = document.getElementById("form").user.value,
@@ -141,8 +144,12 @@ regButt.addEventListener("click", () => {//crea usuario nuevo               no l
         if (checkVacio(formUser, formPass, formPass2)) {//Chekea si hay datos vacíos
             if (check == null) {    //si se encuentra repetido el usuario en la 'base de datos' check no es null        no lo pongo dentro del anterior if para que el else tenga más coherencia
                 if (formPass == formPass2) {    //chekea si las contraseñas son iguales
-                    cuentas.push({ cuenta: formUser, contrasena: formPass })
-                    console.log(cuentas);
+
+                    cuentas = JSON.parse(localStorage.getItem ('cuentas'));     //recupera la lista de cuentas
+                    cuentas.push({ cuenta: formUser, contrasena: formPass });   //pushea la nueva cuenta
+                    localStorage.setItem ('cuentas', JSON.stringify(cuentas));  //almacena la lista de cuentas actualizada
+
+                    console.log(cuentas);/////////////////////////////////////////////////////////////////////////////
                     iniciarSesion(formUser, formPass)   //ejecuta la funcion para iniciar sesión automaticamente
                 } else {        //si las contraseñas no son iguales
                     document.getElementById('error_box').innerHTML = htmlErrorRegPass;
@@ -153,7 +160,7 @@ regButt.addEventListener("click", () => {//crea usuario nuevo               no l
                 mostrarError();
             }
         }
-})
+    })
 
     loginButt.addEventListener("click", () => {
 
