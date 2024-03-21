@@ -14,7 +14,7 @@ body {
 
 p {
     font-size: .7em;
-    color: lightgrey;
+    color: rgb(172, 171, 171);
 }
 
 #main {
@@ -63,10 +63,6 @@ p {
     align-items: center;
     width: 20%;
     min-width: 150px;
-}
-
-.box::placeholder {
-    color: #3a3a3a;
 }
 
 .box {

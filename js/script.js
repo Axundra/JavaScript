@@ -1,11 +1,12 @@
 let
     ingreso = "",
     pass = "",
-    user = "";
+    user = "",
+    cuentaActual = "";
 localStorage.setItem("sesion", true);
 JSON.parse(localStorage.getItem("sesion"))
 
-const
+let         //uso let para reasignarlo sacando los datos del local storage
     cuentas = [
         { cuenta: 'Jhon', contrasena: 'Salchichon' },
         { cuenta: 'Gustavo', contrasena: 'fideos' },
@@ -33,17 +34,17 @@ const
                     <input type="password" name="pass2" id="pass2_id" class="box" placeholder="Confirmar contraseña">
                     <input type="button" value="Registrarme" id="reg">
                     <input type="button" value="Vovler a inicio de sesión" id="log">`,
-    //hoja de registro^
+    //hoja de registro ↑
 
     htmlLog = `     <input type="text" name="user" id="user" class="box" placeholder="Usuario">
                     <input type="password" name="pass" id="pass_id" class="box" placeholder="Contraseña">
                     <input type="button" value="Iniciar sesión" id="log">
                     <input type="button" value="Registrarse" id="reg">`,
-    //index^
-    htmlInicio = `  <h1 id="header">Bienvenido Jhon!</h1>
+    //index ↑                                                        //↓↓↓ ni este ${cuentaActual} ni el otro funcionan y no entiendo porqué
+    htmlInicio = `  <h1 id="header">Bienvenido ${cuentaActual}!</h1>
                     <div>
                         <a href="https://www.instagram.com/axundra"><img src="img/amongtagram.ico" alt="Foto de perfil"></a>
-                        <h2>Jhoncito</h2>
+                        <h2>${cuentaActual}</h2>
                     </div>
                     <div id="form">
                         <input type="button" id="log" value="Amigos">
@@ -52,18 +53,19 @@ const
                         <input type="button" name="cerrar" id="unlog" value="Cerrar sesion">
                     </div>
                     <p>sólo el botón de cerrar sesión sirve</p>`,
+    //una vez iniciada la sesion ↑
 
     htmlErrorLog = `<p id="error_txt" style="opacity: 0;">Usuario y/o<span id="error">contraseña invalidos</span></p>`,
-    //error usuario y/o contraseña incorrectos^
+    //error usuario y/o contraseña incorrectos ↑
 
     htmlErrorRegClon = `<p id="error_txt">Usuario ya existente<span id="error">ingrese otro nombre de usuario</span></p>`,
-    //error usuario ya existente^
+    //error usuario ya existente ↑
 
     htmlErrorRegPass = `<p id="error_txt">Las contraseñas<span id="error">no coinciden</span></p>`,
-    //error contraseñas diferentes^
+    //error contraseñas diferentes ↑
 
     htmlErrorRegNan = `<p id="error_txt">Complete todos los<span id="error">campos por favor</span></p>`;
-    //error datos vacíos^
+    //error datos vacíos ↑
 
 
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ HTML
@@ -117,6 +119,7 @@ function iniciarSesion(user_iniciar, pass_iniciar) {//por algun molesto motivo e
     })
     if (cuentaCorrecta) {//chequea si se encontró la cuenta
         localStorage.setItem("sesion", true);
+        localStorage.setItem('cuenta actual', user_iniciar) //almachena el nombre de la cuenta que está iniciada para mostrarlo en el HTML como saludo
         sesionIniciada()
     } else {//si no se encontró nada:
         mostrarError();
@@ -125,6 +128,8 @@ function iniciarSesion(user_iniciar, pass_iniciar) {//por algun molesto motivo e
 
 function sesionIniciada() {//checkea si ya se inició sesión y procede a la página principal si es así
     if(JSON.parse(localStorage.getItem('sesion'))){
+        cuentaActual = localStorage.getItem('cuenta actual')
+        console.log(cuentaActual);
         mainHTML.innerHTML = htmlInicio;
     }
     
@@ -146,7 +151,6 @@ function registrar() {
                 cuentas = JSON.parse(localStorage.getItem('cuentas'));          //recupera la lista de cuentas
                 cuentas.push({ cuenta: formUser, contrasena: formPass });       //pushea la nueva cuenta
                 localStorage.setItem('cuentas', JSON.stringify(cuentas));       //almacena la lista de cuentas actualizada
-                localStorage.setItem('cuenta actual', JSON.stringify(formUser)) //almachena el nombre de la cuenta que está iniciada para mostrarlo en el HTML como saludo
                 
                 console.log(cuentas);/////////////////////////////////////////////////////////////////////////////
                 iniciarSesion(formUser, formPass)   //ejecuta la funcion para iniciar sesión automaticamente
